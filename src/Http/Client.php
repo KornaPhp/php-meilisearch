@@ -177,16 +177,16 @@ class Client implements Http
         }
 
         if (!$this->isJSONResponse($response->getHeader('content-type'))) {
-            throw new InvalidResponseBodyException($response, $response->getBody()->getContents());
+            throw new InvalidResponseBodyException($response, (string) $response->getBody());
         }
 
         if ($response->getStatusCode() >= 300) {
-            $body = $this->json->unserialize($response->getBody()->getContents()) ?? $response->getReasonPhrase();
+            $body = $this->json->unserialize((string) $response->getBody()) ?? $response->getReasonPhrase();
 
             throw new ApiException($response, $body);
         }
 
-        return $this->json->unserialize($response->getBody()->getContents());
+        return $this->json->unserialize((string) $response->getBody());
     }
 
     /**
@@ -196,9 +196,9 @@ class Client implements Http
      *
      * @return bool true if any header value contains 'application/json', otherwise false
      */
-    private function isJSONResponse(array $headerValues)
+    private function isJSONResponse(array $headerValues): bool
     {
-        $filteredHeaders = array_filter($headerValues, function (string $headerValue) {
+        $filteredHeaders = array_filter($headerValues, static function (string $headerValue) {
             return false !== strpos($headerValue, 'application/json');
         });
 

@@ -743,4 +743,28 @@ search_parameter_guide_matching_strategy_3: |-
   $client->index('movies')->search('white shirt', ['matchingStrategy' => 'frequency']);
 get_similar_post_1: |-
   $similarQuery = new SimilarDocumentsQuery('TARGET_DOCUMENT_ID');
-  $client->index('INDEX_NAME')->getSimilar($similarQuery);
+  $client->index('INDEX_NAME')->searchSimilarDocuments($similarQuery);
+multi_search_federated_1: |-
+  $client->multiSearch([
+      (new SearchQuery())
+        ->setIndexUid('movies'))
+        ->setQuery('batman'),
+      (new SearchQuery())
+        ->setIndexUid('comics')
+        ->setQuery('batman'),
+    ],
+    (new MultiSearchFederation())
+  );
+search_parameter_reference_locales_1: |-
+  $client->index('INDEX_NAME')->search('進撃の巨人', [
+    'locales' => ['jpn']
+  ]);
+get_localized_attribute_settings_1: |-
+  $client->index('INDEX_NAME')->getLocalizedAttributes();
+update_localized_attribute_settings_1: |-
+  $client->index('INDEX_NAME')->updateLocalizedAttributes([
+    'locales' => ['jpn'],
+    'attributePatterns' => ['*_ja']
+  ]);
+reset_localized_attribute_settings_1: |-
+  $client->index('INDEX_NAME')->resetLocalizedAttributes();

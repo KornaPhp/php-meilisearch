@@ -10,14 +10,42 @@ class SimilarDocumentsQuery
      * @var int|string
      */
     private $id;
+
+    /**
+     * @var non-negative-int|null
+     */
     private ?int $offset = null;
+
+    /**
+     * @var positive-int|null
+     */
     private ?int $limit = null;
+
+    /**
+     * @var non-empty-string|null
+     */
     private ?string $embedder = null;
+
+    /**
+     * @var list<non-empty-string>|null
+     */
     private ?array $attributesToRetrieve = null;
+
     private ?bool $showRankingScore = null;
+
     private ?bool $showRankingScoreDetails = null;
+
     private ?bool $retrieveVectors = null;
+
+    /**
+     * @var array<int, array<int, string>|string>|null
+     */
     private ?array $filter = null;
+
+    /**
+     * @var int|float|null
+     */
+    private $rankingScoreThreshold;
 
     /**
      * @param int|string $id
@@ -28,9 +56,11 @@ class SimilarDocumentsQuery
     }
 
     /**
-     * @param non-negative-int $offset
+     * @param non-negative-int|null $offset
+     *
+     * @return $this
      */
-    public function setOffset(?int $offset): SimilarDocumentsQuery
+    public function setOffset(?int $offset): self
     {
         $this->offset = $offset;
 
@@ -38,9 +68,11 @@ class SimilarDocumentsQuery
     }
 
     /**
-     * @param positive-int $limit
+     * @param positive-int|null $limit
+     *
+     * @return $this
      */
-    public function setLimit(?int $limit): SimilarDocumentsQuery
+    public function setLimit(?int $limit): self
     {
         $this->limit = $limit;
 
@@ -49,8 +81,10 @@ class SimilarDocumentsQuery
 
     /**
      * @param array<int, array<int, string>|string> $filter an array of arrays representing filter conditions
+     *
+     * @return $this
      */
-    public function setFilter(array $filter): SimilarDocumentsQuery
+    public function setFilter(array $filter): self
     {
         $this->filter = $filter;
 
@@ -59,8 +93,10 @@ class SimilarDocumentsQuery
 
     /**
      * @param non-empty-string $embedder
+     *
+     * @return $this
      */
-    public function setEmbedder(string $embedder): SimilarDocumentsQuery
+    public function setEmbedder(string $embedder): self
     {
         $this->embedder = $embedder;
 
@@ -69,8 +105,10 @@ class SimilarDocumentsQuery
 
     /**
      * @param list<non-empty-string> $attributesToRetrieve an array of attribute names to retrieve
+     *
+     * @return $this
      */
-    public function setAttributesToRetrieve(array $attributesToRetrieve): SimilarDocumentsQuery
+    public function setAttributesToRetrieve(array $attributesToRetrieve): self
     {
         $this->attributesToRetrieve = $attributesToRetrieve;
 
@@ -79,8 +117,10 @@ class SimilarDocumentsQuery
 
     /**
      * @param bool|null $showRankingScore boolean value to show ranking score
+     *
+     * @return $this
      */
-    public function setShowRankingScore(?bool $showRankingScore): SimilarDocumentsQuery
+    public function setShowRankingScore(?bool $showRankingScore): self
     {
         $this->showRankingScore = $showRankingScore;
 
@@ -89,8 +129,10 @@ class SimilarDocumentsQuery
 
     /**
      * @param bool|null $showRankingScoreDetails boolean value to show ranking score details
+     *
+     * @return $this
      */
-    public function setShowRankingScoreDetails(?bool $showRankingScoreDetails): SimilarDocumentsQuery
+    public function setShowRankingScoreDetails(?bool $showRankingScoreDetails): self
     {
         $this->showRankingScoreDetails = $showRankingScoreDetails;
 
@@ -99,8 +141,10 @@ class SimilarDocumentsQuery
 
     /**
      * @param bool|null $retrieveVectors boolean value to show _vector details
+     *
+     * @return $this
      */
-    public function setRetrieveVectors(?bool $retrieveVectors): SimilarDocumentsQuery
+    public function setRetrieveVectors(?bool $retrieveVectors): self
     {
         $this->retrieveVectors = $retrieveVectors;
 
@@ -108,7 +152,30 @@ class SimilarDocumentsQuery
     }
 
     /**
-     * @return array{id: int|string, offset: non-negative-int, limit: positive-int, filter: array<int, array<int, string>|string>, embedder: non-empty-string, attributesToRetrieve: list<non-empty-string>, showRankingScore: bool, showRankingScoreDetails: bool, retrieveVectors: bool} SimilarDocumentsQuery converted to an array with non null fields
+     * @param int|float|null $rankingScoreThreshold
+     *
+     * @return $this
+     */
+    public function setRankingScoreThreshold($rankingScoreThreshold): self
+    {
+        $this->rankingScoreThreshold = $rankingScoreThreshold;
+
+        return $this;
+    }
+
+    /**
+     * @return array{
+     *     id: int|string,
+     *     offset?: non-negative-int,
+     *     limit?: positive-int,
+     *     filter?: array<int, array<int, string>|string>,
+     *     embedder?: non-empty-string,
+     *     attributesToRetrieve?: list<non-empty-string>,
+     *     showRankingScore?: bool,
+     *     showRankingScoreDetails?: bool,
+     *     retrieveVectors?: bool,
+     *     rankingScoreThreshold?: int|float
+     * }
      */
     public function toArray(): array
     {
@@ -122,8 +189,7 @@ class SimilarDocumentsQuery
             'showRankingScore' => $this->showRankingScore,
             'showRankingScoreDetails' => $this->showRankingScoreDetails,
             'retrieveVectors' => $this->retrieveVectors,
-        ], function ($item) {
-            return null !== $item;
-        });
+            'rankingScoreThreshold' => $this->rankingScoreThreshold,
+        ], static function ($item) {return null !== $item; });
     }
 }

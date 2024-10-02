@@ -4,29 +4,17 @@ declare(strict_types=1);
 
 namespace Meilisearch\Contracts;
 
-class KeysQuery
+class MultiSearchFederation
 {
-    /**
-     * @var non-negative-int|null
-     */
-    private ?int $offset = null;
-
     /**
      * @var non-negative-int|null
      */
     private ?int $limit = null;
 
     /**
-     * @param non-negative-int $offset
-     *
-     * @return $this
+     * @var non-negative-int|null
      */
-    public function setOffset(int $offset): self
-    {
-        $this->offset = $offset;
-
-        return $this;
-    }
+    private ?int $offset = null;
 
     /**
      * @param non-negative-int $limit
@@ -41,16 +29,28 @@ class KeysQuery
     }
 
     /**
+     * @param non-negative-int $offset
+     *
+     * @return $this
+     */
+    public function setOffset(int $offset): self
+    {
+        $this->offset = $offset;
+
+        return $this;
+    }
+
+    /**
      * @return array{
-     *     offset?: non-negative-int,
-     *     limit?: non-negative-int
+     *     limit?: non-negative-int,
+     *     offset?: non-negative-int
      * }
      */
     public function toArray(): array
     {
         return array_filter([
-            'offset' => $this->offset,
             'limit' => $this->limit,
+            'offset' => $this->offset,
         ], static function ($item) { return null !== $item; });
     }
 }
